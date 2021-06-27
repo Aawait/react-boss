@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {NavBar,InputItem,TextareaItem,Button,WingBlank} from 'antd-mobile'
+import {Redirect} from 'react-router-dom'
 
+import {updateUser} from '../../redux/actions'
 import HeadSelect from '../../components/HeadSelect/HeadSelect'
 
  class StaffInfo extends Component {
@@ -23,10 +25,15 @@ import HeadSelect from '../../components/HeadSelect/HeadSelect'
     }
 
     submit = () => {
-        console.log(this.state);
+        this.props.updateUser(this.state)
     }
 
     render() {
+        const {header,type}  = this.props.user
+        if(header){
+            const path = type === '大神' ? '/staff' : '/boss'
+            return <Redirect to={path} />
+        }
         return (
             <div>
                 <NavBar>求职者信息完善</NavBar>
@@ -42,6 +49,7 @@ import HeadSelect from '../../components/HeadSelect/HeadSelect'
 }
 
 export default connect(
-    state => ({}),
-    {}
+    // state ===>  {user:{xxx:xxx,yyy:yyy...}}
+    state => ({user:state.user}),
+    {updateUser}
 )(StaffInfo)

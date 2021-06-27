@@ -1,0 +1,12 @@
+.am-tab-bar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: inherit;
+}
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}

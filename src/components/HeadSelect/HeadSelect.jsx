@@ -20,7 +20,7 @@ export default class HeadSelect extends Component {
         for(let i = 1;i < 21;i++ ){
             heads.push({
                 text:'头像'+i,
-                icon: require(`./images/头像${i}.png`)
+                icon: require(`../../assets/images/头像${i}.png`),
             })
         }
         heads.forEach((item,i)=> {

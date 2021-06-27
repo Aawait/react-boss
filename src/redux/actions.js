@@ -1,8 +1,20 @@
 /* 这个模块用于生产action对象 */
 
-import {reqRegister,reqLogin,reqUpdateUser} from '../api/index'
+import {
+    reqRegister,
+    reqLogin,
+    reqUpdateUser,
+    reqGetUser ,
+    reqUserList
+} from '../api/index'
 
-import {AUTH_SUCCESS,ERROR_MSG,RECEIVE_USER,RESET_USER} from './constant'
+import {
+    AUTH_SUCCESS,
+    ERROR_MSG,
+    RECEIVE_USER,
+    RESET_USER,
+    RECEIVE_USER_LIST
+} from './constant'
 
 export const autuSuccess = user => ({type:AUTH_SUCCESS,data:user})  // 注册/登录成功的同步action对象
 
@@ -12,7 +24,9 @@ export const receiveUser = user => ({type:RECEIVE_USER,data:user})  // 接收用
 
 export const resetUser = msg => ({type:RESET_USER,data:msg})        // 重置用户的同步action
 
-// 异步action 注册的任务
+export const userList = users => ({type:RECEIVE_USER_LIST,data:users})     // 获取用户列表数据的同步aciton
+
+// 异步action 分发注册的任务
 
 export const register = user => {
     
@@ -45,7 +59,7 @@ export const register = user => {
     }
 }
 
-// 异步action  登录的任务
+// 异步action  分发登录的任务
 export const login = user => {
 
     // 前台表单验证
@@ -59,7 +73,7 @@ export const login = user => {
         try{
             const response = await reqLogin(user)
             const result = response.data
-             console.log('result',result);
+             
             if(result.code === 0){
                 console.log("登陆失败",result.message);
                 dispatch(errorMsg(result.message))
@@ -73,7 +87,7 @@ export const login = user => {
     }
 }
 
-// 异步action  更新用户信息的任务
+// 异步action  分发更新用户信息的任务
 export const updateUser = user => {
 
     return async dispatch => {
@@ -91,5 +105,37 @@ export const updateUser = user => {
        }catch(err){
              console.log("修改出错了",err);
        }
+    }
+}
+
+// 异步action  分发获取用户信息的任务
+export const getUser = () => {
+    return async dispatch => {
+     try{
+        const response = await reqGetUser()
+        const result = response.data
+        if(result.code === 0){
+            dispatch(resetUser(result.message))
+        }else {
+            dispatch(receiveUser(result.data))
+        }
+     }catch(err){
+         console.log("请求出错啦",err);
+     }
+    }
+}
+
+// 异步action  分发获取用户列表的任务
+export const getUserList = (type) => {
+    return async dispatch => {
+      try{
+        const response = await reqUserList(type)
+        const result = response.data
+        if(result.code === 1){
+            dispatch(userList(result.data))
+        }
+     }catch(err){
+         console.log("请求出错了",err);
+     }
     }
 }

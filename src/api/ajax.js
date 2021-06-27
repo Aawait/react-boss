@@ -14,6 +14,7 @@ export default function ajax(url,data={},type='GET'){
         if(query){
             query = query.slice(0,-1)
         }
+
         return axios.get(url+'?'+query)
 
     }else {

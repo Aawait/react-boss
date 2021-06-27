@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {NavBar,InputItem,TextareaItem,Button,WingBlank} from 'antd-mobile'
+import {Redirect} from 'react-router-dom'
+import {updateUser} from '../../redux/actions'
 
 import HeadSelect from '../../components/HeadSelect/HeadSelect'
 
@@ -25,10 +27,16 @@ import HeadSelect from '../../components/HeadSelect/HeadSelect'
      }
 
      submit = () => {
-         console.log(this.state);
+         this.props.updateUser(this.state)
      }
 
     render() {
+        // 判断信息是否完善，完善后直接跳转
+        const {header,type} = this.props.user  // 假设头像存在，证明他信息完善了
+        if(header){
+            const path = type === '老板' ? '/boss' : 'staff'
+            return <Redirect to={path} />
+        }
         return (
             <div>
                 <NavBar children="BOSS信息完善" />
@@ -51,6 +59,6 @@ import HeadSelect from '../../components/HeadSelect/HeadSelect'
 }
 
 export default connect(
-    state => ({}),
-    {}
+    state => ({user:state.user}),
+    {updateUser}
 )(BossInfo)

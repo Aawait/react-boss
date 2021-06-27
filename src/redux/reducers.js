@@ -1,7 +1,13 @@
 /* reducer模块，用于汇总所有的reducer并暴露 */
 
 import {combineReducers} from 'redux'
-import {AUTH_SUCCESS,ERROR_MSG,RECEIVE_USER,RESET_USER} from './constant'
+import {
+    AUTH_SUCCESS,
+    ERROR_MSG,
+    RECEIVE_USER,
+    RESET_USER,
+    RECEIVE_USER_LIST
+} from './constant'
 import {getRedirectTo} from '../utils'
 
 const initUser = {
@@ -10,6 +16,7 @@ const initUser = {
     message: '',    // 错误信息
     redirectTo: ''  // 需要自动重定向的路由路径
 }
+
 
 function user(preState=initUser,action){
    
@@ -29,7 +36,20 @@ function user(preState=initUser,action){
 }
 
 
+const initUserList = []  // 初始化用户列表
+function userList(preState=initUserList,action){
+    const {type,data} = action
+    switch(type){
+        case RECEIVE_USER_LIST:
+            return data
+        default :
+            return preState
+    }
+}
+
+
 export default combineReducers({
-    user
+    user,
+    userList
 })
-/* redux中的最终数据 {xxx:0,yyy:1} */
+/* redux中的最终数据 {user:{},userList:[]} */
